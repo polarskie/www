@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>polarsky-HTML/JS</title>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="stylesheet" href="../../polarsky.cc1.css" />
+</head>
+<body>
+	<header class="fourParts threeParts">
+		<h1>
+			<a href="index.html">POLARSKY</a>		
+		</h1>
+		<p>sharing learning experience</p>
+		<div>
+			<span><a href="index.html" title="back to the first page">HOME</a></span>
+			<span><a href="index.html" title="learning C/C++">C/C++</a></span>
+			<span><a href="index.html" title="some experience on web develop">HTML/JS</a></span>
+			<span><a href="index.html" title="applying for and studing at IPS of Waseda">EXCHANGING</a></span>
+			<span><a href="index.html" >OTHERS</a></span>		
+		</div>
+	</header>
+	<main class="fourParts clearfix">
+		<article id="recent">
+			<h2>An Electronic Commerce platform called QUGUANGJIE</h2>
+			<section>
+			<p>I built it with another partner and I was responsible for the php part and most pages of the website. 
+			The platform provide user with a map showing what is on sale or hot at the moment as well as a searching function so that user 
+			can find what they want immediately. The whole website is programmed without any existing library, just pure php, javascript, html5 and css3 to 
+			reduce the web pages’ size to as small as possible and to make the running of the code as fast as possible so that users with a mobile phone 
+			can get the best experience. Because this is not so related to my proposing field, the details is not demonstrated. </p>
+			</section>
+			<section class="innerLink">
+			<a href="ppt.zip">click here to down load the ppts that introduce this project in detail</a>
+			</section>
+		</article>
+	</main>
+	<aside class="fourParts threeParts">
+		<article>
+		<h2>relative links</h2>
+		<section class="outerLink">
+			<a href="http://www.w3school.com.cn/">
+				<div>
+					<h3>W3school in chonese</h3>
+					<p>This is a perfect website for web develop learning! It contains most of the popular techniques that is used for building a website or a App.</p>
+				</div>
+			</a>
+		</section>	
+		<section class="outerLink">
+			<a href="http://caniuse.com/">
+				<div>
+					<h3>CAN I USE</h3>
+					<p>caniuse.com is a English website that shows the availability of new features in HTML5 and CSS3 on web browsers.</p>
+				</div>
+			</a>
+		</section>	
+		<section class="outerLink">
+			<a href="http://www.fontsquirrel.com/">
+				<div>
+					<h3>Font Squirrel</h3>
+					<p>This is a website where you can download web fonts. There are some of them free of charge.</p>
+				</div>
+			</a>
+		</section>	
+		<section class="outerLink">
+			<a href="http://html5please.com/">
+				<div>
+					<h3>HTML5 please</h3>
+					<p>Very good resource for web developers to check which HTML5 and CSS3 features are available. There are also some good 
+					<dfn title="polyfills are used on old browsers to make up for their gap between new ones">polyfills</dfn>.</p>
+				</div>
+			</a>
+		</section>		
+		<section class="outerLink">
+			<a href="http://www.firefox.com/download/">
+				<div>
+					<h3>The firefox web browser</h3>
+					<p>Personally recommending best web browser. It has been done well in supporting the DOM and other standards</p>
+				</div>
+			</a>
+		</section>		
+		</article>
+		
+	</aside>
+	<footer class="fourParts clearfix threeParts">
+		<address class="footerSon">contact: 944232369@qq.com</address>	
+		<strong class="footerSon">polarsky owns all rights of the website</strong>
+	</footer>
+</body>
+</html>

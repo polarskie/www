@@ -1,0 +1,6 @@
+1.回调函数的处理注意避免竞争。
+2.shader填充的古怪（texture）。
+3.ie的xmlhttprequest对象。。。
+4.本地调试JS出现跨域问题的解决方法Origin null is not allowed by Access-Control-Allow-Origin:通过–disable-web-security 来解决。chrome、firefox浏览器快捷方式图标，右键选择属性，在“目标”那一栏里的最后加上 这句：–disable-web-security （注意和之前的内容中间加一个空格，两根中划线）
+5.试着用NULL来解除就引用，从而维护内存！！！
+7.pick不太准--------------readPixels的特性

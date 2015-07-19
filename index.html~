@@ -1,0 +1,356 @@
+﻿<!DOCTYPE>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>polarsky-homePage</title>
+<style type="text/css">
+
+body
+{
+	animation: backloaded 1s;
+	-moz-animation: backloaded 1s;	/* Firefox */
+	-webkit-animation: backloaded 1s;	/* Safari 和 Chrome */
+	-o-animation: backloaded 1s;	/* Opera */
+	font-family:"微软雅黑";
+}
+
+@keyframes backloaded
+{
+0%   {background: black;}
+100% {background: grey;}
+}
+
+@-moz-keyframes backloaded /* Firefox */
+{
+0%   {background: black;}
+100% {background: grey;}
+}
+
+@-webkit-keyframes backloaded /* Safari 和 Chrome */
+{
+0%   {background: black;}
+100% {background: grey;}
+}
+
+@-o-keyframes backloaded /* Opera */
+{
+0%   {background: black;}
+100% {background: grey;}
+}
+
+#topbar
+{
+	position:relative;
+	animation: loaded 2s;
+	-moz-animation: loaded 2s;	/* Firefox */
+	-webkit-animation: loaded 2s;	/* Safari 和 Chrome */
+	-o-animation: loaded 2s;	/* Opera */
+}
+
+@keyframes loaded
+{
+0%   {background: grey;color: grey;right: 400px;}
+100% {background: black;color: white;right: 0px;}
+}
+
+@-moz-keyframes loaded /* Firefox */
+{
+0%   {background: grey;color: grey;right: 400px;}
+100% {background: black;color: white;right: 0px;}
+}
+
+@-webkit-keyframes loaded /* Safari 和 Chrome */
+{
+0%   {background: grey;color: grey;right: 400px;}
+100% {background: black;color: white;right: 0px;}
+}
+
+@-o-keyframes loaded /* Opera */
+{
+0%   {background: grey;color: grey;right: 400px;}
+100% {background: black;color: white;right: 0px;}
+}
+
+.option
+{
+	font-size:35px;
+	padding-top:10px;
+	padding-bottom:10px;
+	text-align:center;
+	color:black;
+	margin-bottom:2px;
+	width:10%;
+	
+	transition:1s;
+	-moz-transition:1s; /* Firefox 4 */
+	-webkit-transition:1s; /* Safari and Chrome */
+	-o-transition:1s; /* Opera */
+}
+
+.option:hover
+{
+	color:white;
+	background-color:black;
+	width:100%;
+}
+
+.content
+{
+	font-size:35px;
+	padding-top:0px;
+	padding-bottom:0px;
+	text-align:center;
+	color:grey;
+	background-color:grey;
+	margin-bottom:2px;
+	width:100%;
+	height:0px;
+	overflow:scroll;
+}
+
+.content:hover
+{
+	color:white;
+	background-color:black;
+	width:100%;
+}
+
+.disappear
+{
+	font-size:35px;
+	padding-top:0px;
+	padding-bottom:0px;
+	text-align:center;
+	color:black;
+	background-color:white;
+	margin-bottom:2px;
+	width:100%;
+	height:0px;
+	overflow:scroll;
+	
+	transition:1s;
+	-moz-transition:1s; /* Firefox 4 */
+	-webkit-transition:1s; /* Safari and Chrome */
+	-o-transition:1s; /* Opera */
+	
+	animation: disappear 1s;
+	-moz-animation: disappear 1s;	/* Firefox */
+	-webkit-animation: disappear 1s;	/* Safari 和 Chrome */
+	-o-animation: disappear 1s;	/* Opera */
+}
+
+.disappear:hover
+{
+	width:100%;
+}
+
+@keyframes disappear
+{
+0%   {height: 500px;}
+100% {height: 0px;}
+}
+
+@-moz-keyframes disappear /* Firefox */
+{
+0%   {height: 500px;}
+100% {height: 0px;}
+}
+
+@-webkit-keyframes disappear /* Safari 和 Chrome */
+{
+0%   {height: 500px;}
+100% {height: 0px;}
+}
+
+@-o-keyframes disappear /* Opera */
+{
+0%   {height: 500px;}
+100% {height: 0px;}
+}
+
+.appear
+{
+	font-size:35px;
+	padding-top:0px;
+	padding-bottom:0px;
+	text-align:center;
+	color:black;
+	background-color:white;
+	margin-bottom:2px;
+	width:100%;
+	height:500px;
+	overflow:scroll;
+	
+	transition:1s;
+	-moz-transition:1s; /* Firefox 4 */
+	-webkit-transition:1s; /* Safari and Chrome */
+	-o-transition:1s; /* Opera */
+	
+	animation: appear 1s;
+	-moz-animation: appear 1s;	/* Firefox */
+	-webkit-animation: appear 1s;	/* Safari 和 Chrome */
+	-o-animation: appear 1s;	/* Opera */
+}
+
+.appear:hover
+{
+	width:100%;
+}
+
+@keyframes appear
+{
+0%   {height: 0px;}
+100% {height: 500px;}
+}
+
+@-moz-keyframes appear /* Firefox */
+{
+0%   {height: 0px;}
+100% {height: 500px;}
+}
+
+@-webkit-keyframes appear /* Safari 和 Chrome */
+{
+0%   {height: 0px;}
+100% {height: 500px;}
+}
+
+@-o-keyframes appear /* Opera */
+{
+0%   {height: 0px;}
+100% {height: 500px;}
+}
+
+.tag
+{
+	text-align:left;
+	padding-left:10px;
+	padding-top:5px;
+	padding-bottom:5px;
+	background-color:grey;
+	
+	transition:1s;
+	-moz-transition:1s; /* Firefox 4 */
+	-webkit-transition:1s; /* Safari and Chrome */
+	-o-transition:1s; /* Opera */
+}
+
+.tag:hover
+{
+	background-color:black;
+	color:white;
+	padding-left:30px;
+	padding-top:15px;
+	padding-bottom:15px;
+}
+
+a:link{text-decoration:none; color:white;}
+a:visited{text-decoration:none; color:white;}
+a:hover{text-decoration:underline; color:white;}
+a:active{text-decoration:none; color:white;}
+</style>
+</head>
+
+<body style="background-color:grey;">
+<title>polarsky's homepage</title>
+<div style="font-size:85px;font-style:italic;">POLARSKY</div>
+<div id="topbar" style="font-size:45px;padding-left:500px;font-style:italic;color:white;background-color:black;">极地天空</div>
+<div style="float:left;width:400px;margin-top:10px;">
+	<div class="option" id="NEWSOp" onmouseover="mouseOver(event)">NEWS</div>
+	<div class="option" id="DISPLAYOp" onmouseover="mouseOver(event)">DISPLAY</div>
+	<div class="option" id="DOWNOp" onmouseover="mouseOver(event)">DOWNLOAD</div>
+	<div class="option" id="CONTACTOp" onmouseover="mouseOver(event)">CONTACT</div>
+</div>
+<div id = "contents" style="float:left;margin-top:10px;">
+	<div class="content" id="NEWSCo">
+		<h2>
+			NEWS
+		</h2>
+		<div class="tag">
+			<a href="HEVCSA_news.html">research plan for High Efficiency Video Coding Specialized for Animation</a>
+			<a href="php_display.html" style="color:red">a testing php project 去逛街 is now ready!!! click here to visit it!!</a>
+		</div>
+	</div>
+	<div class="content" id="DISPLAYCo">
+		<h2>
+			DISPLAY
+		</h2>
+		<div class="tag">
+			<a href="pol3D_display.html">pol3D Function Library for WebGL</a>
+		</div>
+		<div class="tag">
+			<a href="php_display.html">an Electronic Commerce platform</a>
+		</div>
+		<div class="tag">
+			<a href="display.html">Embroider the QRcode with Halftone  Picture</a>
+		</div>
+		<div class="tag">
+			<a href="display.html">a python written Game</a>
+		</div>
+		<div class="tag">
+			<a href="display.html">Simulated Pipelined CPU with Prefetching</a>
+		</div>
+	</div>
+	<div class="content" id="DOWNCo">
+		<h2>
+			DOWNLOAD
+		</h2>
+		<div class="tag">
+			<a href="pol3D_down.html">download pol3D</a>
+		</div>
+		<div class="tag">
+			<a href="php_down.html">download an Electronic Commerce platform</a>
+		</div>
+	</div>
+	<div class="content" id="CONTACTCo">
+		<h2>
+			CONTACT
+		</h2>
+		<div class="tag">
+			E-mail: polarsky@sjtu.edu.cn
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+var NEWSCo = document.getElementById("NEWSCo");
+var DISPLAYCo = document.getElementById("DISPLAYCo");
+var DOWNCo = document.getElementById("DOWNCo");
+var CONTACTCo = document.getElementById("CONTACTCo");
+var CONTENTS = document.getElementById("contents");
+CONTENTS.style.width = document.body.clientWidth - 500;
+NEWSCo.className = "appear";
+
+function mouseOver(event)
+{
+	var src = event.target.id;
+	switch(src)
+	{
+		case "NEWSOp": 
+			NEWSCo.className = "appear";
+			DISPLAYCo.className = "disappear";
+			DOWNCo.className = "disappear";
+			CONTACTCo.className = "disappear";
+			break;
+		case "DISPLAYOp": 
+			NEWSCo.className = "disappear";
+			DISPLAYCo.className = "appear";
+			DOWNCo.className = "disappear";
+			CONTACTCo.className = "disappear";
+			break;
+		case "DOWNOp": 
+			NEWSCo.className = "disappear";
+			DISPLAYCo.className = "disappear";
+			DOWNCo.className = "appear";
+			CONTACTCo.className = "disappear";
+			break;
+		case "CONTACTOp": 
+			NEWSCo.className = "disappear";
+			DISPLAYCo.className = "disappear";
+			DOWNCo.className = "disappear";
+			CONTACTCo.className = "appear";
+			break;
+	}
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,69 @@
+body
+{
+	animation: backloaded 1s;
+	-moz-animation: backloaded 1s;	/* Firefox */
+	-webkit-animation: backloaded 1s;	/* Safari 和 Chrome */
+	-o-animation: backloaded 1s;	/* Opera */
+	font-family:"微软雅黑";
+}
+
+@keyframes backloaded
+{
+0%   {background: black;}
+100% {background: grey;}
+}
+
+@-moz-keyframes backloaded /* Firefox */
+{
+0%   {background: black;}
+100% {background: grey;}
+}
+
+@-webkit-keyframes backloaded /* Safari 和 Chrome */
+{
+0%   {background: black;}
+100% {background: grey;}
+}
+
+@-o-keyframes backloaded /* Opera */
+{
+0%   {background: black;}
+100% {background: grey;}
+}
+
+#topbar
+{
+	position:relative;
+	animation: loaded 2s;
+	-moz-animation: loaded 2s;	/* Firefox */
+	-webkit-animation: loaded 2s;	/* Safari 和 Chrome */
+	-o-animation: loaded 2s;	/* Opera */
+}
+
+@keyframes loaded
+{
+0%   {background: grey;color: grey;right: 400px;}
+100% {background: black;color: white;right: 0px;}
+}
+
+@-moz-keyframes loaded /* Firefox */
+{
+0%   {background: grey;color: grey;right: 400px;}
+100% {background: black;color: white;right: 0px;}
+}
+
+@-webkit-keyframes loaded /* Safari 和 Chrome */
+{
+0%   {background: grey;color: grey;right: 400px;}
+100% {background: black;color: white;right: 0px;}
+}
+
+@-o-keyframes loaded /* Opera */
+{
+0%   {background: grey;color: grey;right: 400px;}
+100% {background: black;color: white;right: 0px;}
+}
+
+p{
+	font-size:25px;
+}

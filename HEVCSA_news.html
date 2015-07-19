@@ -1,0 +1,151 @@
+﻿<!DOCTYPE>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>polarsky</title>
+<style type="text/css">
+
+body
+{
+	animation: backloaded 1s;
+	-moz-animation: backloaded 1s;	/* Firefox */
+	-webkit-animation: backloaded 1s;	/* Safari 和 Chrome */
+	-o-animation: backloaded 1s;	/* Opera */
+	font-family:"微软雅黑";
+}
+
+@keyframes backloaded
+{
+0%   {background: black;}
+100% {background: grey;}
+}
+
+@-moz-keyframes backloaded /* Firefox */
+{
+0%   {background: black;}
+100% {background: grey;}
+}
+
+@-webkit-keyframes backloaded /* Safari 和 Chrome */
+{
+0%   {background: black;}
+100% {background: grey;}
+}
+
+@-o-keyframes backloaded /* Opera */
+{
+0%   {background: black;}
+100% {background: grey;}
+}
+
+#topbar
+{
+	position:relative;
+	animation: loaded 2s;
+	-moz-animation: loaded 2s;	/* Firefox */
+	-webkit-animation: loaded 2s;	/* Safari 和 Chrome */
+	-o-animation: loaded 2s;	/* Opera */
+}
+
+@keyframes loaded
+{
+0%   {background: grey;color: grey;right: 400px;}
+100% {background: black;color: white;right: 0px;}
+}
+
+@-moz-keyframes loaded /* Firefox */
+{
+0%   {background: grey;color: grey;right: 400px;}
+100% {background: black;color: white;right: 0px;}
+}
+
+@-webkit-keyframes loaded /* Safari 和 Chrome */
+{
+0%   {background: grey;color: grey;right: 400px;}
+100% {background: black;color: white;right: 0px;}
+}
+
+@-o-keyframes loaded /* Opera */
+{
+0%   {background: grey;color: grey;right: 400px;}
+100% {background: black;color: white;right: 0px;}
+}
+
+p{
+	font-size:25px;
+}
+</style>
+</head>
+
+<body style="background-color:grey;">
+<title>news</title>
+<div style="font-size:85px;font-style:italic;" onclick="location.assign('index.html')">POLARSKY</div>
+<div id="topbar" style="font-size:45px;padding-left:500px;font-style:italic;color:white;background-color:black;">极地天空</div> 
+<div> 
+<h1>
+High Efficiency Video Coding Specialized for Animation
+</h1>
+<h2>
+	Background:
+</h2>
+	<p>
+		1. With the development of digital multimedia and computer graphics, full HD video is taking its step to replace 720P, and we are also witnessing the advent of 4K. Still, the conception of 8K is already put forward. As a result, the data size of the same length of video becomes bigger.
+	</p>
+	<p>
+		2. Animation, as a special part of the video family, owns its unique fascination that has captured a lot of people. Even adults enjoy it. On the other hand, animation has its features that make it possible to seek a specialized codec to compress the data efficiently.
+	</p>
+	<p>
+		3. The new standard of video compression, High Efficiency Video Coding (HEVC), a successor to H.264 standard was released, which is expected to lead to a revolution to the video compression technique.
+	</p>
+<br/>
+<h2>
+	Aim:
+</h2>
+	<p>
+		1. To design a codec specialized for animation that compress frames of an animation far more efficiently than the existing codecs.
+	</P>
+	<p>
+		2. During the program, enrich my experience of doing research in the field of Computer Graphics and Image Media.
+	</P>
+	<p>
+		3. Develop the ability of innovation and problem solving.
+	</p>
+<br/>
+<h2>
+	Motivation:
+</h2>
+	<p>
+		1. A lighter data stream transmission will benefits the broadcast of animation on the internet a lot, which can create great economic value.
+	</p>
+	<p>
+		2. Smaller data can save disk space for more files, which means a video website can hold more video resources with lower expense. Also individual will benefit from it.
+	</p>
+	<p>
+		3. A specialized decoder for animation can expect higher efficiency of decoding process.
+	</p>
+	<p>
+		4. As stated above, I am interested in Computer Graphics.
+	</p>
+<br/>	
+<h2>
+	Novelty:
+</h2>
+	<p>
+		Animation is not like ordinary video taken by video camera. The key word of its frames is “simple”. For most of the time, its contour, its color and its relation between the frames is simple. For example, the color in a frame is usually monotonous, which means for most of the time, there are consecutive pixels of just the same color. Even if there may be some gradually changing color, they will definitely obey some algebraic function, not like the color of actual objects shot by video camera. There are already some compression algorithms for it in existing video compression standard, but they have some limitations that make them not satisfying for compression of animation data. Take Intra-Picture Prediction for example, most of the process predict the color of the pixels by some algebraic equation, and the pixels are restricted in blocks of 4×4 or bigger pixels, but they don’t take any advantage of the pixels in definitely one color, which means no need to predict or to record any deviation between the predicted color and the original color, also there can be some improve in that we divide the frame not into blocks, but into arbitrary shapes when the face of the same color is big enough for us to do this. Due to the above explanation, there are a lot of work of novelty that I can do to obtain higher efficiency in the field of animation compression.
+	</p>
+<br/>
+<h2>
+	Availability:
+</h2>
+	<p>
+		1. Because the codec is specially designed for animation, I can concentrate on its specific features. Many difficult and complex functions for ordinary video is not quite efficient, or even bad, for animation encoding, so I can modify them or just skip them. By learning, changing, abridging and integrating existing algorithms, the research procedure can be greatly expedited and the target is possible enough to be accomplished.
+	</p>
+	<p>
+		2. The standard of HEVC is just released and not widely supported. Some technology in the standard is likely to be useful in the program. I can build my program either as a independent codec standard or, if possible, as a profile of the HEVC standard which can bring much more users and much less cost.
+	</p>
+	<p>
+		3. It is also possible to find some help or support from companies that are interested in my research.
+	</p>
+<br/>
+</div>
+</body>

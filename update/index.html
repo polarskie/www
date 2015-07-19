@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>polarsky-homepage</title>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="stylesheet" href="polarsky.cc1.css" />
+</head>
+<body>
+	<header class="fourParts threeParts">
+		<h1>
+			<a href="/index.html">POLARSKY</a>		
+		</h1>
+		<p>sharing learning experience</p>
+		<div>
+			<span><a href="/index.html" title="back to the first page">HOME</a></span>
+			<span><a href="/index.html" title="learning C/C++">C/C++</a></span>
+			<span><a href="/index.html" title="some experience on web develop">HTML/JS</a></span>
+			<span><a href="/index.html" title="applying for and studing at IPS of Waseda">EXCHANGING</a></span>
+			<span><a href="/index.html" >OTHERS</a></span>		
+		</div>
+	</header>
+	<main class="fourParts clearfix">
+		<article id="recent">
+			<h2>Recent updated</h2>
+		</article>
+	</main>
+	<aside class="fourParts threeParts">
+		<article>
+		<h2>relative links</h2>
+		<section class="outerLink">
+			<a href="http://www.w3school.com.cn/">
+				<div>
+					<h3>W3school in chonese</h3>
+					<p>This is a perfect website for web develop learning! It contains most of the popular techniques that is used for building a website or a App.</p>
+				</div>
+			</a>
+		</section>	
+		<section class="outerLink">
+			<a href="http://caniuse.com/">
+				<div>
+					<h3>CAN I USE</h3>
+					<p>caniuse.com is a English website that shows the availability of new features in HTML5 and CSS3 on web browsers.</p>
+				</div>
+			</a>
+		</section>	
+		<section class="outerLink">
+			<a href="http://www.fontsquirrel.com/">
+				<div>
+					<h3>Font Squirrel</h3>
+					<p>This is a website where you can download web fonts. There are some of them free of charge.</p>
+				</div>
+			</a>
+		</section>	
+		<section class="outerLink">
+			<a href="http://html5please.com/">
+				<div>
+					<h3>HTML5 please</h3>
+					<p>Very good resource for web developers to check which HTML5 and CSS3 features are available. There are also some good 
+					<dfn title="polyfills are used on old browsers to make up for their gap between new ones">polyfills</dfn>.</p>
+				</div>
+			</a>
+		</section>		
+		<section class="outerLink">
+			<a href="http://www.firefox.com/download/">
+				<div>
+					<h3>The firefox web browser</h3>
+					<p>Personally recommending best web browser. It has been done well in supporting the DOM and other standards</p>
+				</div>
+			</a>
+		</section>		
+		</article>
+		
+	</aside>
+	<footer class="fourParts clearfix threeParts">
+		<address class="footerSon">contact: 944232369@qq.com</address>	
+		<strong class="footerSon">polarsky owns all rights of the website</strong>
+	</footer>
+<script type="text/javascript">
+var recent = document.getElementById("recent");
+var getRecent = new XMLHttpRequest();
+getRecent.onreadystatechange = function () {
+	if (getRecent.readyState == 4) {
+		if ((getRecent.status>=200 && getRecent.status < 300) || getRecent.status == 304) {
+			appendList(getRecent.responseText)
+		}
+		else {
+			alert("Request failed: Number "+getRecent.status);
+		}
+	}
+}
+getRecent.open("get", "news/list", true);
+getRecent.send(null);
+
+function appendList(list) {
+	var sec,url,tit,sum,dat,lin,div;
+	list = list.split("**");
+	var fragment = document.createDocumentFragment();
+	var secs;
+	for (var i=0;i<list.length;++i) {
+		secs=list[i].split("&&");
+		sec=document.createElement("section");
+		sum=document.createElement("p");
+		dat=document.createElement("time");
+		tit=document.createElement("h3");
+		lin=document.createElement("a");
+		div=document.createElement("div");
+		tit.appendChild(document.createTextNode(secs[1]));
+		dat.appendChild(document.createTextNode(secs[0]));
+		sum.appendChild(document.createTextNode(secs[2]));
+		lin.appendChild(div);
+		lin.href = secs[3];
+		div.appendChild(tit);
+		div.appendChild(sum);
+		div.appendChild(dat);
+		sec.appendChild(lin);
+		sec.className = "innerLink";
+		var seed = Math.random();
+		
+		var colorStyle="#"+generateColor()+generateColor()+generateColor();
+		sec.style.backgroundColor = colorStyle;
+		fragment.appendChild(sec);
+	}
+	recent.appendChild(fragment);
+	var jjj=0;
+}
+
+function generateColor() {
+	var origin = parseInt(Math.random()*256).toString(16);
+	while (origin.length<2) {
+		origin = "0"+origin;
+	}	
+	return origin;
+}
+</script>
+</body>
+</html>

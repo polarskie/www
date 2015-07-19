@@ -1,0 +1,176 @@
+html
+{
+	padding: 0px;
+	min-height: 100%;
+}
+
+body
+{
+	max-width: 1280px;
+	margin-left: auto;
+	margin-right: auto;
+	background-color: orange;
+	font-size: 100%;
+	color: white;
+	text-shadow: 0px 0px 3px black;
+	-webkit-text-shadow: 0px 0px 3px black;
+}
+
+main a:link,
+aside a:link
+{
+	color: white;
+	text-decoration: none;
+}
+
+main a:focus,
+main a:hover,
+aside a:focus,
+aside a:hover
+{
+	text-decoration: underline;
+}
+
+main a:visited,
+aside a:visited
+{
+	color: orange;
+	text-decoration: blink;
+}
+
+main a:active,
+aside a:active
+{
+	color: yellowgreen;
+	text-decoration: blink;
+}
+
+h1
+{
+	font: 5em/0.5em caption;
+}
+
+h1,h2,h3,h4
+{
+}
+
+.fourParts
+{
+	padding: 0.5em;
+}
+
+.threeParts
+{
+	box-shadow: 4px 4px 10px 2px black;
+	-webkit-box-shadow: 4px 4px 10px 2px black;
+}
+header
+{
+	margin-bottom: 1em;
+	background-color: RGB(255, 45, 45);					/*RGB(6,45,104);
+	overflow: auto;							/*why is here must be this? If not, the h1 would get out of the header*/
+}
+header a
+{
+	text-decoration: none;
+}
+
+header p
+{
+	font-style: italic;
+}
+
+header span
+{
+	border-left: 1px dashed white;
+	border-right: 1px dashed white;
+	padding: 0.3em;
+	margin-bottom: 0.2em;
+}
+
+body>main,
+body>aside
+{
+	margin-bottom: 4em;
+}
+
+main
+{
+	float: left;
+	width: 67%;
+}
+
+main section
+{
+	margin: 3em 0em;
+	padding: 0.5em;
+	box-shadow: 0px 0px 0px inset 0px black;
+	border: 4px dashed white;
+}
+
+.innerLink
+{
+	transition: background-color 0.6s,box-shadow 0.6s,-webkit-box-shadow 0.6s;
+	-webkit-transition: background-color 0.6s,box-shadow 0.6s,-webkit-box-shadow 0.6s;
+}
+
+.innerLink:hover
+{
+	background-color: RGB(53,129,244);
+	box-shadow: 4px 4px 10px 12px black inset;
+}
+
+aside
+{
+	float: right;
+	width: 25%;
+	background-color: RGB(45, 45, 255);
+}
+
+aside section
+{
+	padding: 0.5em;
+	box-shadow: 0px 0px 0px 0px black;
+}
+
+.outerLink
+{
+	transition: background-color 0.6s,box-shadow 0.6s,-webkit-box-shadow 0.6s;
+	-webkit-transition: background-color 0.6s,box-shadow 0.6s,-webkit-box-shadow 0.6s;
+}
+
+.outerLink:hover
+{
+	background-color: RGB(3,24,56);
+	box-shadow: 4px 4px 10px 2px black;
+}
+
+footer
+{
+	clear: left right;
+	position: fixed;
+	left: 0em;
+	bottom: 0em;
+	width: 100%;
+	background-color: RGB(45, 205, 45);
+}
+
+.footerSon
+{
+	display: block;
+	width: 30%;
+	margin: 0px auto 0px auto;
+}
+
+.clearfix:before,
+.clearfix:after{
+	content: " ";
+	display: table;
+}
+
+.clearfix:after{
+	clear: both;
+}
+.clearfix{
+	*zoom: 1;
+}

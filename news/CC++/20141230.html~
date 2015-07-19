@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>polarsky-C/C++</title>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="stylesheet" href="../../polarsky.cc.css" />
+</head>
+<body>
+	<header class="fourParts threeParts">
+		<h1>
+			<a href="index.html">POLARSKY</a>		
+		</h1>
+		<p>sharing learning experience</p>
+		<div>
+			<span><a href="index.html" title="back to the first page">HOME</a></span>
+			<span><a href="index.html" title="learning C/C++">C/C++</a></span>
+			<span><a href="index.html" title="some experience on web develop">HTML/JS</a></span>
+			<span><a href="index.html" title="applying for and studing at IPS of Waseda">EXCHANGING</a></span>
+			<span><a href="index.html" >OTHERS</a></span>		
+		</div>
+	</header>
+	<main class="fourParts clearfix">
+		<article id="recent">
+		<h2>An introduction to Halftone QRcode Embroider</h2>
+		<img src="test.bmp" alt="your browser can't display a bmp file" style="float:right; padding:0.5em">
+		<p>
+			QRcode has been a very frequently used 2D code for quick access to websites or
+article messages. But the black and white blocks look ugly. There are already some work
+done by researchers which embellishes the QRcode by trying to combine it with a halftone
+picture. But the outcome is not so satisfying, both on the recognition rate and on the
+resolution of the picture. My work was to find a better algorithm for the original aim.</p>
+<p>
+The existing algorithm works by dividing every black and white block of the QRcode into
+a matrix of 3×3 smaller blocks, and maintain the central smaller block right the color the
+big block was, leaving the other 8 small blocks free to change their color between black
+and white to make the whole QRcode resembles the halftone picture. This technique
+works because for most of the The QRcode scanners, when they scan the QRcode, they
+determine every block’s color only by the color of the block’s central smaller block.
+Here comes 2 problems:</p>
+<p>
+Problem 1: Since we only divide every block into 9 blocksm the resolution is not high
+when the QRcode’s version is small, which means there is not much data in the QRcode.</p>
+<p>
+Problem 2: When the QRcode’s data goes bigger, the scanner has trouble in
+determining the central block’s color due to its limitation of the camera.</p>
+<p>
+The 2 problems interrelate. What I did is finding an algorithm that balance them.
+My solution is to:</p>
+<p>
+Step 1: Divide every block into 5n×5n’s matrix instead of 3×3’s matrix, for example here,
+25×25, and maintain the central n×n(in this example 5×5) matrix the original color. This
+solves the problem 1, but deteriorates the problem 2, for we are now demanding the
+scanner to distinct a small block which is the 1/25 of the big block. And I want to notify
+here that on the other hand, a 1/25 sized block is small so that it can hide itself into the
+background better than the small blocks in the original algorithm.
+<p>
+Step 2: Select part of the small blocks in the central 15×15 matrix(but not in the central
+5×5 matrix) to be the original color(the same color given to the central 5×5), and all of the
+not colored small blocks are free to be colored. The selecting function acts in the way that
+the nearer the small block to the center, the more possible it be chosen. This step eases
+the problem 2. To get a balance between the to problem, how many small blocks to select
+is an attribute that can be controlled by the user.
+There are still a lot more detail about this algorithm that can’t be demonstrated due to
+the limitation of space, I have to leave them untouched.
+The above is part of works I have done until now. There are still many other course
+projects that I guess of less importance, and I think the above is enough to show my
+capability and possibility in the study field of Information Architecture, especially in
+Computer Graphics and Image Media.
+</p>
+		</article>
+	</main>
+	<aside class="fourParts threeParts">
+		<article>
+		<h2>relative links</h2>
+		<section class="outerLink">
+			<a href="http://www.w3school.com.cn/">
+				<div>
+					<h3>W3school in chonese</h3>
+					<p>This is a perfect website for web develop learning! It contains most of the popular techniques that is used for building a website or a App.</p>
+				</div>
+			</a>
+		</section>	
+		<section class="outerLink">
+			<a href="http://caniuse.com/">
+				<div>
+					<h3>CAN I USE</h3>
+					<p>caniuse.com is a English website that shows the availability of new features in HTML5 and CSS3 on web browsers.</p>
+				</div>
+			</a>
+		</section>	
+		<section class="outerLink">
+			<a href="http://www.fontsquirrel.com/">
+				<div>
+					<h3>Font Squirrel</h3>
+					<p>This is a website where you can download web fonts. There are some of them free of charge.</p>
+				</div>
+			</a>
+		</section>	
+		<section class="outerLink">
+			<a href="http://html5please.com/">
+				<div>
+					<h3>HTML5 please</h3>
+					<p>Very good resource for web developers to check which HTML5 and CSS3 features are available. There are also some good 
+					<dfn title="polyfills are used on old browsers to make up for their gap between new ones">polyfills</dfn>.</p>
+				</div>
+			</a>
+		</section>		
+		<section class="outerLink">
+			<a href="http://www.firefox.com/download/">
+				<div>
+					<h3>The firefox web browser</h3>
+					<p>Personally recommending best web browser. It has been done well in supporting the DOM and other standards</p>
+				</div>
+			</a>
+		</section>		
+		</article>
+		
+	</aside>
+	<footer class="fourParts clearfix threeParts">
+		<address class="footerSon">contact: 944232369@qq.com</address>	
+		<strong class="footerSon">polarsky owns all rights of the website</strong>
+	</footer>
+</body>
+</html>

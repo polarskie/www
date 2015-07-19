@@ -1,0 +1,110 @@
+#title
+{
+font-family: ºÚÌå, serif;
+font-size : 100px;
+color: #ffffff;
+width:auto;
+height: 200px;
+margin-left: auto; 
+margin-right: auto;
+margin-top: 5%;
+}
+div{
+	font-family: ºÚÌå, serif;
+-moz-user-select: none;
+-khtml-user-select: none;
+user-select: none;
+}
+body
+{
+background-color: #4d7b95;
+text-align:center;
+}
+
+#top_bar
+{
+	position:fixed;
+	left:0%;
+	right:60px;
+	top:0%;
+	z-index: 1030;
+	width:40px;
+	font-size:35px;
+}
+
+.top_option{
+    margin-top: 10px;
+	width:100%;
+	box-sizing: border-box;
+	text-align:center;
+	padding-top:8px;
+	padding-bottom:8px;
+	overflow: hidden;
+	color:white;
+}
+#shopInfo
+{
+	margin-left: auto; 
+	margin-right: auto;
+	width:75%;
+	height:510px;
+	font-size:40px;
+	margin-bottom:200px;
+}
+
+#shopInfoImg
+{
+	float:left;
+	width:30%;
+	height:100%;
+}
+img
+{
+	width : 100%;
+}
+
+#shopInfoTex
+{
+	text-align:left;
+	float:left;
+	width:70%;
+}
+
+.CshopInfoTex
+{
+	margin-left:10%;
+}
+
+#comments
+{
+	margin-left: auto;
+	margin-right: auto;
+	width:80%;
+	height:1200px;
+	font-size:40px;
+}
+.events
+{
+	text-align:left;
+	width:100%;
+	word-wrap: break-word;
+	word-break:break-all;
+	background-color:white;
+}
+#addingComm
+{
+	width:100%;
+	text-align:left;
+}
+#myComm
+{
+	width:180px;
+	height:40px;
+	font-size:30px;
+	
+}
+#myCommContent
+{
+	width:100%;
+	font-size:40px;
+}

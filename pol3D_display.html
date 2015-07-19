@@ -1,0 +1,89 @@
+﻿<!DOCTYPE>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>polarsky</title>
+<style type="text/css">
+
+body
+{
+	animation: backloaded 1s;
+	-moz-animation: backloaded 1s;	/* Firefox */
+	-webkit-animation: backloaded 1s;	/* Safari 和 Chrome */
+	-o-animation: backloaded 1s;	/* Opera */
+	font-family:"微软雅黑";
+}
+
+@keyframes backloaded
+{
+0%   {background: black;}
+100% {background: grey;}
+}
+
+@-moz-keyframes backloaded /* Firefox */
+{
+0%   {background: black;}
+100% {background: grey;}
+}
+
+@-webkit-keyframes backloaded /* Safari 和 Chrome */
+{
+0%   {background: black;}
+100% {background: grey;}
+}
+
+@-o-keyframes backloaded /* Opera */
+{
+0%   {background: black;}
+100% {background: grey;}
+}
+
+#topbar
+{
+	position:relative;
+	animation: loaded 2s;
+	-moz-animation: loaded 2s;	/* Firefox */
+	-webkit-animation: loaded 2s;	/* Safari 和 Chrome */
+	-o-animation: loaded 2s;	/* Opera */
+}
+
+@keyframes loaded
+{
+0%   {background: grey;color: grey;right: 400px;}
+100% {background: black;color: white;right: 0px;}
+}
+
+@-moz-keyframes loaded /* Firefox */
+{
+0%   {background: grey;color: grey;right: 400px;}
+100% {background: black;color: white;right: 0px;}
+}
+
+@-webkit-keyframes loaded /* Safari 和 Chrome */
+{
+0%   {background: grey;color: grey;right: 400px;}
+100% {background: black;color: white;right: 0px;}
+}
+
+@-o-keyframes loaded /* Opera */
+{
+0%   {background: grey;color: grey;right: 400px;}
+100% {background: black;color: white;right: 0px;}
+}
+</style>
+</head>
+
+<body style="background-color:grey;">
+<title>display pol3D</title>
+<div style="font-size:85px;font-style:italic;" onclick="location.assign('index.html')">POLARSKY</div>
+<div id="topbar" style="font-size:45px;padding-left:500px;font-style:italic;color:white;background-color:black;">极地天空</div> 
+<div style=""> 
+<h2>
+introduction to the pol3D Function Library for WebGL
+</h2>
+<p>
+I got to know the WebGL language occasionally when I was browsing internet. WebGL is a javascript based language that provide interface to get access to GPU for HTML5 website. It enriches the content of web page with 3D Animation, as well as provide high efficiency of graphic calculation because part of the code is compiled and send to GPU to execute. I tried to integrate the language into a library which I call “pol3D” of functions and I regard the construction of this library as the first true exploration in the world of Computer Graphics because I did most of the thing at the level of bottom and from the level of bottom, which makes me understood many details of 3D CG. The library is aimed for using least code to create a 3D world on the web page, and provide a friendly interface for user. It contains 9 “.js” files including “polBackground.js”, “polCamera.js”, “polFileReader.js” and so on, each aimed for an aspect of the whole work so that if one is not interested in some aspects, he can make his code lighter by not including the corresponding file. During the process of the programming, I learned the construction of projection translation matrix, technique of “Pick Up” and so on. I even defined a new type of file of “.pol” that contains the vertex information of an object and a converter that convert a file of “.obj” to “.pol” for the efficiency of my code. But I have to confess that it is not completed by now and I plan to go on with this work during my winter holiday.
+</p>
+<a href="pol3D_down.html">download the pol3D</a>
+</div>
+</body>

@@ -1,0 +1,842 @@
+﻿<!DOCTYPE html>
+<html onMouseUp="clearText(event)">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>polarskie project</title>
+<link rel="stylesheet" type="text/css" href="../polarsky.cc.css" />
+<style type="text/css">
+p
+{
+	font-size: 15px;
+}
+</style><script id="mapShader-fs" type="x-shader/x-fragment">
+	precision highp float;
+	
+	varying float vPosition;
+	
+    void main(void) {
+        gl_FragColor = vec4(0.5,vPosition,vPosition,1.0);
+    }
+</script>
+
+<script id="mapShader-vs" type="x-shader/x-vertex">
+    attribute vec3 aVertexPosition;
+    attribute vec2 aTextureCoord;
+    attribute vec3 aVertexNormal;
+
+    uniform float uLowest;
+    uniform float uHeight;
+	uniform float uAxis;
+	
+	varying float vPosition;
+
+    void main(void) {
+        gl_Position = vec4(aVertexPosition.x/uAxis, aVertexPosition.z/uAxis, (uLowest-aVertexPosition.y)/uHeight, 1.0);
+		vPosition = (aVertexPosition.y-uLowest)/uHeight;
+		aTextureCoord;
+		aVertexNormal;
+    }
+</script>
+
+<script id="pickShader-fs" type="x-shader/x-fragment">
+	
+	precision highp float;
+	
+	uniform float uPolObjIndex;
+
+    void main(void) {
+        gl_FragColor = vec4(uPolObjIndex,uPolObjIndex,uPolObjIndex,1.0);
+    }
+</script>
+
+<script id="pickShader-vs" type="x-shader/x-vertex">
+    attribute vec3 aVertexPosition;
+    attribute vec2 aTextureCoord;
+    attribute vec3 aVertexNormal;
+
+    uniform mat4 uMVMatrix;
+    uniform mat4 uPMatrix;
+
+    void main(void) {
+        gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
+		aTextureCoord;
+		aVertexNormal;
+    }
+</script>
+
+<script id="colorShader-fs" type="x-shader/x-fragment">
+
+    precision mediump float;
+
+	varying vec4 vColor;
+
+    void main(void) {
+        gl_FragColor = vColor;
+    }
+</script>
+
+<script id="colorShader-vs" type="x-shader/x-vertex">
+    attribute vec3 aVertexPosition;
+    attribute vec2 aTextureCoord;
+    attribute vec3 aVertexNormal;
+
+    uniform mat4 uMVMatrix;
+    uniform mat4 uPMatrix;
+	uniform vec3 uColor;
+
+	varying vec4 vColor;
+
+    void main(void) {
+        gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
+		vColor = vec4(uColor, 1.0);
+		aTextureCoord;
+		aVertexNormal;
+    }
+</script>
+
+<script id="lightColorShader-fs" type="x-shader/x-fragment">
+
+    precision mediump float;
+
+	varying vec4 vColor;
+
+    void main(void) {
+        gl_FragColor = vColor;
+    }
+</script>
+
+<script id="lightColorShader-vs" type="x-shader/x-vertex">
+    attribute vec3 aVertexPosition;
+    attribute vec3 aVertexNormal;
+    attribute vec2 aTextureCoord;
+
+    uniform mat4 uMVMatrix;
+    uniform mat4 uPMatrix;
+    uniform mat4 uNMatrix;
+	
+	uniform vec3 uColor;
+
+    uniform vec3 uAmbientColor;
+
+    uniform vec3 uLightAssist[5];
+    uniform vec3 uLightColor[5];
+	uniform int uLightStyle[5];
+
+    uniform bool uUseLighting;
+	
+	uniform int uLightNum;
+	
+	varying vec4 vColor;
+
+    void main(void) {
+		vec4 mvPosition = uMVMatrix * vec4(aVertexPosition, 1.0);
+        gl_Position = uPMatrix * mvPosition;
+
+        if (!uUseLighting) 
+		{
+			vColor = vec4(uColor, 1.0);
+        } 
+		else 
+		{
+			vec3 vLightWeighting = vec3(0.0, 0.0, 0.0);
+            vec3 transformedNormal = (uNMatrix * vec4(aVertexNormal, 1.0)).xyz;
+			if(uLightNum>0)
+			{
+			for(int i=0;i<5;++i)
+			{
+				if(uLightStyle[i] == 0)
+				{
+				 	break;
+				}
+				else if(uLightStyle[i] == 1)
+				{
+            		float directionalLightWeighting = max(dot(transformedNormal, uLightAssist[i]), 0.0);
+            		vLightWeighting += uLightColor[i] * directionalLightWeighting;
+				}
+				else
+				{
+					vec3 lightDirection = normalize(uLightAssist[i] - mvPosition.xyz);
+            		float pointLightWeighting = max(dot(transformedNormal, lightDirection), 0.0);
+            		vLightWeighting += uLightColor[i] * pointLightWeighting;
+				}
+			}
+			}
+			vLightWeighting += uAmbientColor;
+			vColor = vec4(uColor * vLightWeighting, 1.0);
+        }
+		aTextureCoord;
+    }
+</script>
+
+<script id="textureShader-fs" type="x-shader/x-fragment">
+
+    precision mediump float;
+
+
+    varying vec2 vTextureCoord;
+    varying vec3 vLightWeighting;
+
+    uniform sampler2D uSampler;
+
+    void main(void) {
+        gl_FragColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
+    }
+</script>
+
+<script id="textureShader-vs" type="x-shader/x-vertex">
+    attribute vec3 aVertexPosition;
+    attribute vec3 aVertexNormal;
+    attribute vec2 aTextureCoord;
+
+    uniform mat4 uMVMatrix;
+    uniform mat4 uPMatrix;
+
+    varying vec2 vTextureCoord;
+
+    void main(void) {
+        gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
+        vTextureCoord = aTextureCoord;
+		aVertexNormal;
+    }
+</script>
+
+<script id="lightTextureShader-fs" type="x-shader/x-fragment">
+
+    precision mediump float;
+
+
+    varying vec2 vTextureCoord;
+    varying vec3 vLightWeighting;
+
+    uniform sampler2D uSampler;
+
+    void main(void) {
+        vec4 textureColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
+        gl_FragColor = vec4(textureColor.rgb * vLightWeighting, textureColor.a);
+    }
+</script>
+
+<script id="lightTextureShader-vs" type="x-shader/x-vertex">
+    attribute vec3 aVertexPosition;
+    attribute vec3 aVertexNormal;
+    attribute vec2 aTextureCoord;
+
+    uniform mat4 uMVMatrix;
+    uniform mat4 uPMatrix;
+    uniform mat4 uNMatrix;
+
+    uniform vec3 uAmbientColor;
+
+    uniform vec3 uLightAssist[5];
+    uniform vec3 uLightColor[5];
+	uniform int uLightStyle[5];
+
+    uniform bool uUseLighting;
+	
+	uniform int uLightNum;
+
+    varying vec2 vTextureCoord;
+    varying vec3 vLightWeighting;
+
+    void main(void) {
+		vec4 mvPosition = uMVMatrix * vec4(aVertexPosition, 1.0);
+        gl_Position = uPMatrix * mvPosition;
+        vTextureCoord = aTextureCoord;
+
+        if (!uUseLighting) {
+            vLightWeighting = vec3(1.0, 1.0, 1.0);
+        } else {
+			vLightWeighting = vec3(0.0, 0.0, 0.0);
+            vec3 transformedNormal = (uNMatrix * vec4(aVertexNormal, 1.0)).xyz;
+			if(uLightNum>0)
+			{
+			for(int i=0;i<5;++i)
+			{
+				if(uLightStyle[i] == 0)
+				{
+				 	break;
+				}
+				else if(uLightStyle[i] == 1)
+				{
+            		float directionalLightWeighting = max(dot(transformedNormal, uLightAssist[i]), 0.0);
+            		vLightWeighting += uLightColor[i] * directionalLightWeighting;
+				}
+				else
+				{
+					vec3 lightDirection = normalize(uLightAssist[i] - mvPosition.xyz);
+            		float pointLightWeighting = max(dot(transformedNormal, lightDirection), 0.0);
+            		vLightWeighting += uLightColor[i] * pointLightWeighting;
+				}
+			}
+			}
+			vLightWeighting += uAmbientColor;
+        }
+    }
+</script>
+
+<script id="blendLightTextureShader-fs" type="x-shader/x-fragment">
+
+    precision mediump float;
+
+
+    varying vec2 vTextureCoord;
+    varying vec3 vLightWeighting;
+
+    uniform sampler2D uSampler;
+	uniform float uAlpha;
+
+    void main(void) {
+        vec4 textureColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
+        gl_FragColor = vec4(textureColor.rgb * vLightWeighting, textureColor.a*uAlpha);
+    }
+</script>
+
+<script id="blendLightTextureShader-vs" type="x-shader/x-vertex">
+    attribute vec3 aVertexPosition;
+    attribute vec3 aVertexNormal;
+    attribute vec2 aTextureCoord;
+
+    uniform mat4 uMVMatrix;
+    uniform mat4 uPMatrix;
+    uniform mat4 uNMatrix;
+
+    uniform vec3 uAmbientColor;
+
+    uniform vec3 uLightAssist[5];
+    uniform vec3 uLightColor[5];
+	uniform int uLightStyle[5];
+
+    uniform bool uUseLighting;
+	
+	uniform int uLightNum;
+
+    varying vec2 vTextureCoord;
+    varying vec3 vLightWeighting;
+
+    void main(void) {
+		vec4 mvPosition = uMVMatrix * vec4(aVertexPosition, 1.0);
+        gl_Position = uPMatrix * mvPosition;
+        vTextureCoord = aTextureCoord;
+
+        if (!uUseLighting) {
+            vLightWeighting = vec3(1.0, 1.0, 1.0);
+        } else {
+			vLightWeighting = vec3(0.0, 0.0, 0.0);
+            vec3 transformedNormal = (uNMatrix * vec4(aVertexNormal, 1.0)).xyz;
+			if(uLightNum>0)
+			{
+			for(int i=0;i<5;++i)
+			{
+				if(uLightStyle[i] == 0)
+				{
+				 	break;
+				}
+				else if(uLightStyle[i] == 1)
+				{
+            		float directionalLightWeighting = max(dot(transformedNormal, uLightAssist[i]), 0.0);
+            		vLightWeighting += uLightColor[i] * directionalLightWeighting;
+				}
+				else
+				{
+					vec3 lightDirection = normalize(uLightAssist[i] - mvPosition.xyz);
+            		float pointLightWeighting = max(dot(transformedNormal, lightDirection), 0.0);
+            		vLightWeighting += uLightColor[i] * pointLightWeighting;
+				}
+			}
+			}
+			vLightWeighting += uAmbientColor;
+        }
+    }
+</script>
+
+<script id="cartoonLightTextureShader1-fs" type="x-shader/x-fragment">
+
+    precision mediump float;
+
+    void main(void) {
+		gl_FragColor = vec4(0,0,0,1);
+    }
+</script>
+
+<script id="cartoonLightTextureShader1-vs" type="x-shader/x-vertex">
+    attribute vec3 aVertexPosition;
+    attribute vec3 aVertexNormal;
+    attribute vec2 aTextureCoord;
+
+    uniform mat4 uMVMatrix;
+    uniform mat4 uPMatrix;
+    uniform mat4 uNMatrix;
+
+    void main(void) {
+		vec4 mvPosition = uMVMatrix * vec4(aVertexPosition, 1.0);
+        gl_Position = uPMatrix * vec4(mvPosition.xyz - normalize((uNMatrix * vec4(aVertexNormal, 1.0))).xyz*0.004*mvPosition.z,1.0);
+		aTextureCoord;
+    }
+</script>
+
+<script id="cartoonLightTextureShader2-fs" type="x-shader/x-fragment">
+
+    precision mediump float;
+
+
+    varying vec2 vTextureCoord;
+    varying vec3 vLightWeighting;
+
+    uniform sampler2D uSampler;
+
+    void main(void) {
+        vec4 textureColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
+		float totalC = vLightWeighting.r+vLightWeighting.g+vLightWeighting.b;
+		if(totalC<0.3)
+        	gl_FragColor = vec4(textureColor.rgb * vec3(0,0,0), textureColor.a);
+		else if(totalC>0.3&&totalC<1.5)
+        	gl_FragColor = vec4(textureColor.rgb * vec3(0.33,0.33,0.33), textureColor.a);
+		else if(totalC>1.5&&totalC<2.4)
+        	gl_FragColor = vec4(textureColor.rgb * vec3(0.66,0.66,0.66), textureColor.a);
+		else
+        	gl_FragColor = vec4(textureColor.rgb * vec3(1.0,1.0,1.0), textureColor.a);
+    }
+</script>
+
+<script id="cartoonLightTextureShader2-vs" type="x-shader/x-vertex">
+    attribute vec3 aVertexPosition;
+    attribute vec3 aVertexNormal;
+    attribute vec2 aTextureCoord;
+
+    uniform mat4 uMVMatrix;
+    uniform mat4 uPMatrix;
+    uniform mat4 uNMatrix;
+
+    uniform vec3 uAmbientColor;
+
+    uniform vec3 uLightAssist[5];
+    uniform vec3 uLightColor[5];
+	uniform int uLightStyle[5];
+
+    uniform bool uUseLighting;
+	
+	uniform int uLightNum;
+
+    varying vec2 vTextureCoord;
+    varying vec3 vLightWeighting;
+
+    void main(void) {
+		vec4 mvPosition = uMVMatrix * vec4(aVertexPosition, 1.0);
+        gl_Position = uPMatrix * mvPosition;
+        vTextureCoord = aTextureCoord;
+
+        if (!uUseLighting) {
+            vLightWeighting = vec3(1.0, 1.0, 1.0);
+        } else {
+			vLightWeighting = vec3(0.0, 0.0, 0.0);
+            vec3 transformedNormal = (uNMatrix * vec4(aVertexNormal, 1.0)).xyz;
+			if(uLightNum>0)
+			{
+			for(int i=0;i<5;++i)
+			{
+				if(uLightStyle[i] == 0)
+				{
+				 	break;
+				}
+				else if(uLightStyle[i] == 1)
+				{
+            		float directionalLightWeighting = max(dot(transformedNormal, uLightAssist[i]), 0.0);
+            		vLightWeighting += uLightColor[i] * directionalLightWeighting;
+				}
+				else
+				{
+					vec3 lightDirection = normalize(uLightAssist[i] - mvPosition.xyz);
+            		float pointLightWeighting = max(dot(transformedNormal, lightDirection), 0.0);
+            		vLightWeighting += uLightColor[i] * pointLightWeighting;
+				}
+			}
+			}
+			vLightWeighting += uAmbientColor;
+        }
+    }
+</script>
+
+<script id="shadowMapShader-fs" type="x-shader/x-fragment">
+	
+	precision highp float;
+
+	varying float vZCoord;
+	
+    void main(void) {
+        gl_FragColor = vec4(vZCoord,vZCoord,vZCoord,1.0);
+    }
+</script>
+
+<script id="shadowMapShader-vs" type="x-shader/x-vertex">
+    attribute vec3 aVertexPosition;
+    attribute vec2 aTextureCoord;
+    attribute vec3 aVertexNormal;
+
+    uniform mat4 uMVMatrix;
+    uniform mat4 uPMatrix;
+	
+	varying float vZCoord;
+
+    void main(void) {
+		vec4 worldPos = uMVMatrix * vec4(aVertexPosition, 1.0);
+		float ta = length(worldPos.xyz);
+		float tb = ta*sin(phy)/length(worldPos.xy);
+		float phy = (acos(worldPos.z/ta)/4.0)+0.75*3.14159265758;
+		float newZ = ta*cos(phy);
+		float newX = tb*worldPos.x;
+		float newY = tb*worldPos.y;
+        gl_Position = uPMatrix * vec4(newX, newY, newZ, 1.0);
+		vZCoord = (gl_Position.z/gl_Position.w+1)/2;
+		aTextureCoord;
+		aVertexNormal;
+    }
+</script>
+
+<script id="cartoonLightTextureShader2Shadow-fs" type="x-shader/x-fragment">
+
+    precision mediump float;
+
+
+    varying vec2 vTextureCoord;
+    varying vec3 vLightWeighting;
+
+    uniform sampler2D uSampler;
+
+    void main(void) {
+        vec4 textureColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
+		float totalC = vLightWeighting.r+vLightWeighting.g+vLightWeighting.b;
+		if
+		else if(totalC<0.3)
+        	gl_FragColor = vec4(textureColor.rgb * vec3(0,0,0), textureColor.a);
+		else if(totalC>0.3&&totalC<1.5)
+        	gl_FragColor = vec4(textureColor.rgb * vec3(0.33,0.33,0.33), textureColor.a);
+		else if(totalC>1.5&&totalC<2.4)
+        	gl_FragColor = vec4(textureColor.rgb * vec3(0.66,0.66,0.66), textureColor.a);
+		else
+        	gl_FragColor = vec4(textureColor.rgb * vec3(1.0,1.0,1.0), textureColor.a);
+    }
+</script>
+
+<script id="cartoonLightTextureShader2Shadow-vs" type="x-shader/x-vertex">
+    attribute vec3 aVertexPosition;
+    attribute vec3 aVertexNormal;
+    attribute vec2 aTextureCoord;
+
+    uniform mat4 uMVMatrix;
+    uniform mat4 uPMatrix;
+    uniform mat4 uNMatrix;
+	uniform mat4 uSPMatrix;
+
+    uniform vec3 uAmbientColor;
+
+    uniform vec3 uLightAssist[5];
+    uniform vec3 uLightColor[5];
+	uniform int uLightStyle[5];
+	
+	uniform vec3 uShadowLightPos;
+
+    uniform bool uUseLighting;
+	
+	uniform int uLightNum;
+
+    varying vec2 vTextureCoord;
+    varying vec3 vLightWeighting;
+	varying vec2 vLightCoord;
+	varying float vZCoord;
+
+    void main(void) {
+		vec4 mvPosition = uMVMatrix * vec4(aVertexPosition, 1.0);
+        gl_Position = uPMatrix * mvPosition;
+        vTextureCoord = aTextureCoord;
+
+		vec3 lightCoordPos = mvPosition.xyz - uShadowLightPos;
+		float ta = length(lightCoordPos);
+		float tb = ta*sin(phy)/length(lightCoordPos.xy);
+		float phy = (acos(lightCoordPos.z/ta)/4.0)+0.75*3.14159265758;
+		float newZ = ta*cos(phy);
+		float newX = tb*lightCoordPos.x;
+		float newY = tb*lightCoordPos.y;
+		vZCoord = (gl_Position.z/gl_Position.w+1)/2;
+		vec3 lightCoord = (uSPMatrix * vec4(newX, newY, newZ, 1.0)).xyz;
+		vLightCoord = vec2(lightCoord.x/lightCoord.z/2+0.5, lightCoord.y/lightCoord.z/2+0.5);
+		
+        if (!uUseLighting) {
+            vLightWeighting = vec3(1.0, 1.0, 1.0);
+        } else {
+			vLightWeighting = vec3(0.0, 0.0, 0.0);
+            vec3 transformedNormal = (uNMatrix * vec4(aVertexNormal, 1.0)).xyz;
+			if(uLightNum>0)
+			{
+			for(int i=0;i<5;++i)
+			{
+				if(uLightStyle[i] == 0)
+				{
+				 	break;
+				}
+				else if(uLightStyle[i] == 1)
+				{
+            		float directionalLightWeighting = max(dot(transformedNormal, uLightAssist[i]), 0.0);
+            		vLightWeighting += uLightColor[i] * directionalLightWeighting;
+				}
+				else
+				{
+					vec3 lightDirection = normalize(uLightAssist[i] - mvPosition.xyz);
+            		float pointLightWeighting = max(dot(transformedNormal, lightDirection), 0.0);
+            		vLightWeighting += uLightColor[i] * pointLightWeighting;
+				}
+			}
+			}
+			vLightWeighting += uAmbientColor;
+        }
+    }
+</script>
+
+<script id="zeroShader-fs" type="x-shader/x-fragment">
+	
+	precision mediump float;
+
+    void main(void) {
+        gl_FragColor = vec4(1.0,0,0,1);
+    }
+</script>
+
+<script id="colorShader-vs" type="x-shader/x-vertex">
+    attribute vec3 aVertexPosition;
+    attribute vec2 aTextureCoord;
+    attribute vec3 aVertexNormal;
+
+    uniform mat4 uMVMatrix;
+    uniform mat4 uPMatrix;
+	
+	uniform int uPolObjIndex;
+	
+	varying int vPolObjIndex;
+
+    void main(void) {
+        gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
+		vPolObjIndex = uPolObjIndex;
+		aTextureCoord;
+		aVertexNormal;
+    }
+</script>
+</head>
+<body style="background-color:grey;" onLoad="newLoaded();" onkeydown="polKeyDown(event);" onkeyup="polKeyUp(event)" >
+<div style="font-size:85px;font-style:italic;margin:8px;">POLARSKY</div>
+<div id="topbar" style="font-size:45px;padding-left:500px;font-style:italic;color:white;background-color:black;">极地天空</div> 
+<div style="background:black;margin:8px 8px 0px 0px;float:left;">
+    <canvas id="polarskie-canvas" style="border: none;position:float;float:left;" width="1000" height="500"></canvas>
+    <canvas id="polSpecial-canvas" style="border: none;position:absolute;" width="1000" height="500" onClick="mouse(event)" onMouseDown="showText(event)"></canvas>
+</div>
+	<p id='fps' style="color:white;alignment:center;background:black;"></p>
+<div style="float:left;">
+<h1>
+渲染风格
+</h1>
+<form id="modeChoose" onclick="changeMode()">
+<p>轮廓：<input type="radio" name="renderType"></input>
+<p>纸片：<input type="radio" name="renderType"></input>
+<p>漫反射：<input type="radio" name="renderType"></input>
+<p>贴图：<input type="radio" name="renderType"></input>
+<p>Blending风格：<input type="radio" name="renderType"></input>
+<p>Cartoon风格：<input type="radio" checked="checked" name="renderType"></input>
+</form>
+<form id="lightColor" onclick="changeLightColor()">
+<p>灯光颜色:
+<p>Red:<input type="range" max=255 min=0/> Green:<input type="range" max=255 min=0/> Blue:<input type="range" max=255 min=0/> 
+</form>
+<h1>
+操作按键
+</h1>
+<p>← → ↓ ↑ 控制水平移动
+<p>W，S，A，D控制转动视角
+<p>Q，S控制上升下降
+<p>R键复位为水平视角
+</div>
+<script type="text/javascript">
+var loaded=0;
+var aMapData;
+var clientWidth=window.innerWidth;
+var clientHeight=window.innerHeight;
+var polCanvas=document.getElementById("polarskie-canvas");
+var polSpecialCanvas=document.getElementById("polSpecial-canvas");
+var modeChoose=document.getElementById("modeChoose");
+var lightColor=document.getElementById("lightColor");
+polSpecialCanvas.width = polCanvas.width = clientWidth/2;
+polSpecialCanvas.height = polCanvas.height = clientHeight*2/3;
+function newLoaded()
+{
+	loaded++;
+	if(loaded>=8) setTimeout("polStart()",10);
+}
+</script>
+
+<script type="text/javascript" src="polMapping.js" onLoad="newLoaded();"></script>
+<script type="text/javascript" src="polFileReader.js" onLoad="newLoaded();"></script>
+<script type="text/javascript" src="polSpaceGeom.js" onLoad="newLoaded();"></script>
+<script type="text/javascript" src="polThreading.js" onLoad="newLoaded();"></script>
+<script type="text/javascript" src="polCamera.js" onLoad="newLoaded();"></script>
+<script type="text/javascript" src="polSpecialCanvas.js" onLoad="newLoaded();"></script>
+<script type="text/javascript" src="shaderReader.js" onLoad="newLoaded();"></script>
+<script type="text/javascript">
+var aMapData;
+
+function you()
+{
+	polObjArray[0].transformMatrix.translateBy(-0.01,0,0);
+}
+
+var polCanvas=document.getElementById("polarskie-canvas");
+    function polStart() {
+		polSpecialCanvas.style.left = polCanvas.offsetLeft + "px";
+		polSpecialCanvas.style.top = polCanvas.offsetTop + "px";
+		//polCanvas.height=window.innerHeight-polCanvas.offsetTop*2;
+		//polCanvas.width=window.innerWidth-polCanvas.offsetLeft*2;
+		//initCameraArray();
+        initGL(polCanvas, polSpecialCanvas);
+        appendShader("colorShader-fs","colorShader-vs",1);
+		appendShader("textureShader-fs","textureShader-vs",3);
+        appendShader("lightColorShader-fs","lightColorShader-vs",2);
+        appendShader("lightTextureShader-fs","lightTextureShader-vs",6);
+		appendShader("blendLightTextureShader-fs","blendLightTextureShader-vs",30);
+		appendShader("cartoonLightTextureShader1-fs","cartoonLightTextureShader1-vs",97);
+		appendShader("cartoonLightTextureShader2-fs","cartoonLightTextureShader2-vs",6);
+		//appendShader("zeroShader-fs","zeroShader-vs",0);
+		
+		AppendPolMesh("bg",1);
+		AppendPolMesh("teapot",5);
+		polInitFramebuffer(10);
+		//AppendPolMesh("01",1);
+		//AppendPolMesh("02",1);
+		//AppendPolMesh("teaPot",5);
+		//AppendPolMesh('g',1);
+		
+		
+		AppendPolObject(0);
+		AppendPolObject(1);
+		//polObjArray[0].secondShader.push(6);
+		polObjArray[1].secondShader.push(6);
+		
+		//alert("Could not initialise WebGL, sorry :-(");
+		
+		//polObjArray[0].setRotating(0,1,0,0.0002);
+		//polObjArray[1].setRotating(0,1,0,0.0002);
+		polObjArray[0].ambientColor=[0.2, 0.2, 0.2];
+		polObjArray[1].ambientColor=[0, 0, 0];
+		polObjArray[0].addLight(2,[1,1,1],[-8,-1,-10]);
+		polObjArray[1].addLight(1,[1,1,1],[-8,-1,-10]);
+		polObjArray[0].transformMatrix.resizeBy(0.3,0.3,0.3);
+		polObjArray[0].transformMatrix.translateBy(0,0,-75);
+		polObjArray[1].transformMatrix.resizeBy(0.3,0.3,0.3);
+		polObjArray[1].transformMatrix.translateBy(0,0,-50);
+		/*
+		polObjArray[2].setRotating(0,1,0,0.002);
+		
+		polObjArray[0].ambientColor=[0.2, 0.2, 0.2];
+		polObjArray[1].ambientColor=[0.2, 0.2, 0.2];
+		polObjArray[2].ambientColor=[0.2, 0.2, 0.2];
+		//polObjArray[3].ambientColor=[0.0, 0.0, 0.0];
+		
+		polObjArray[0].addLight(2,[1,1,1],[-8,-1,-10]);
+		polObjArray[1].addLight(2,[1,1,1],[-8,-1,-10]);
+		polObjArray[2].addLight(2,[1,1,1],[-8,-1,-10]);
+		//polObjArray[3].addLight(2,[1,1,1],[-8,-1,-10]);
+		
+		polObjArray[0].resizeTo(0.3,0.3,0.3,5000);
+		polObjArray[1].resizeTo(0.3,0.3,0.3,5000);
+		polObjArray[2].resizeTo(0.3,0.3,0.3,5000);
+		//document.write(polObjArray[0].transformMatrix.toArray());
+		*/
+        gl.clearColor(0.5, 0.5, 0.5, 1.0);
+		
+		polObjArray[1].setRotating(0,1,0,0.002);
+		//polObjArray[1].translateBy(0,0,-5,5000);
+		//polObjArray[0].translateBy(0,0,-50,5000);
+		//appendThreadFunction(you,'false',null);
+		//setTimeout("polThread()",5000);
+		//polCameraArray[0].ahead(-0.1);
+		polThread();
+    }
+	
+	
+function polMain()
+{
+	if(keyPressed[37]){ polCameraArray[polCameraArray.tempCam].sideway(0.1);}
+	if(keyPressed[39]){ polCameraArray[polCameraArray.tempCam].sideway(-0.1);}
+	if(keyPressed[38]){ polCameraArray[polCameraArray.tempCam].ahead(0.1);}
+	if(keyPressed[40]){ polCameraArray[polCameraArray.tempCam].ahead(-0.1);}
+	if(keyPressed[65]){ polCameraArray[polCameraArray.tempCam].yaw(0.004);}
+	if(keyPressed[68]){ polCameraArray[polCameraArray.tempCam].yaw(-0.004);}
+	if(keyPressed[87]){ polCameraArray[polCameraArray.tempCam].fly(0.1);}
+	if(keyPressed[83]){ polCameraArray[polCameraArray.tempCam].fly(-0.1);}
+	if(keyPressed[81]){ polCameraArray[polCameraArray.tempCam].pitch(-0.004);}
+	if(keyPressed[69]){ polCameraArray[polCameraArray.tempCam].pitch(0.004);}
+	if(keyPressed[82]){ polCameraArray[polCameraArray.tempCam].reset();}
+}
+
+function mouse(event)
+{
+	//polPick();
+	//document.getElementById("debug").innerHTML = polPick(event.clientX-polCanvas.offsetLeft,event.clientY-polCanvas.offsetTop);
+	//writeText('kkkk',event.clientX-polCanvas.offsetLeft,event.clientY-polCanvas.offsetTop);
+}
+
+function showText(event)
+{
+	var objectNum = -1;
+	for(var i=0;i<polObjArray.length;++i)
+	{
+		drawPolPick(i);
+	}
+	objectNum = polPick(event.layerX, event.layerY);
+	writeText(objectNum,event.layerX,event.layerY);
+}
+
+function clearText(event)
+{
+	clearPol2DObj(0);
+}
+
+var keyPressed = new Array(91);
+
+function polKeyDown(event)
+{
+	keyPressed[event.keyCode]=true;
+	//document.getElementById("debug").innerHTML = keyPressed;
+}
+
+function polKeyUp(event)
+{
+	keyPressed[event.keyCode]=false;
+	//document.getElementById("debug").innerHTML = keyPressed;
+}
+
+function changeMode()
+{
+	for(var i=0;i<modeChoose.elements.length;++i)
+	{
+		if(modeChoose.elements[i].checked)
+		{
+			polObjArray[1].shaderIndex = i;
+			if(i==5)
+			{
+				polObjArray[1].secondShader.push(6);
+			}
+			else
+			{
+				polObjArray[1].secondShader.pop();
+			}
+		}
+	}
+}
+
+function changeLightColor()
+{
+	for(var i=0;i<lightColor.elements.length;++i)
+	{
+		polObjArray[1].lightColor[i]=lightColor.elements[i].value/255;
+	}
+}
+</script>
+</body>
+</html>
